@@ -105,6 +105,7 @@ function renderAll() {
 
 // ─── HERO STATS ────────────────────────────────────────────────────────────────
 function updateHeroStats() {
+  // فقط اگه المنت‌های هوم پیج وجود داشته باشند، به‌روزرسانی کن
   const dailyRevenue = el('stat-revenue-hero');
   const profitMargin = el('stat-margin-hero');
   const itemsSold = el('stat-items-hero');
@@ -125,7 +126,7 @@ function updateHeroStats() {
     profitMargin.textContent = `${margin}%`;
   }
   
-  // به‌روزرسانی متن‌های روند (trends)
+  // به‌روزرسانی متن‌های روند (trends) - فقط اگه المنت وجود داشته باشه
   if (revenueTrend) {
     const revenue = state.stats.todayRevenue || 0;
     revenueTrend.innerHTML = `💰 ${fmt(revenue)} total today`;
@@ -163,7 +164,7 @@ function renderIngredients() {
   );
   const tbody = el('ing-tbody');
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🧂</div><p>${state.ingSearch ? 'No results found' : 'No ingredients yet. Add one to get started!'}</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🧂</div><p>${state.ingSearch ? 'No results found' : 'No ingredients yet. Add one to get started!'}</p></div></td></table>`;
     return;
   }
   tbody.innerHTML = filtered.map(ing => {
