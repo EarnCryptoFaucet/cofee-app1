@@ -73,7 +73,7 @@ async function loadAll() {
     state.stats = stats;
     state.sales = todaySales.sales || [];
     renderAll();
-    updateHeroStats(); // اضافه شد: آمار هوم پیج رو به‌روز کن
+    updateHeroStats();
   } catch (e) {
     toast('Failed to load data: ' + e.message, 'error');
   }
@@ -89,7 +89,7 @@ async function refreshStats() {
     state.sales = todaySales.sales || [];
     renderStats();
     renderSalesLog();
-    updateHeroStats(); // اضافه شد: آمار هوم پیج رو به‌روز کن
+    updateHeroStats();
   } catch (e) { console.error(e); }
 }
 
@@ -103,9 +103,8 @@ function renderAll() {
   renderSalesLog();
 }
 
-// ─── HERO STATS (NEW) ────────────────────────────────────────────────────────
+// ─── HERO STATS ────────────────────────────────────────────────────────────────
 function updateHeroStats() {
-  // به‌روزرسانی آمارهای هوم پیج با دیتای واقعی
   const dailyRevenue = el('stat-revenue-hero');
   const profitMargin = el('stat-margin-hero');
   const itemsSold = el('stat-items-hero');
@@ -268,9 +267,9 @@ function renderProducts() {
     return `
     <tr id="prod-row-${prod.id}">
       <td><span style="font-weight:600">${prod.name}</span></nc
-      <td style="font-weight:700;color:var(--brown-700)">${fmt(prod.price)}</td>
-      <td style="color:var(--red-600)">${fmt(cost)}</td>
-      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
+      <td style="font-weight:700;color:var(--brown-700)">${fmt(prod.price)}</nc
+      <td style="color:var(--red-600)">${fmt(cost)}</nc
+      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</nc
       <td>
         <div class="profit-bar-wrap">
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
@@ -460,9 +459,9 @@ function renderProfitTable() {
     return `
     <tr>
       <td><span style="font-weight:600">${medal} ${prod.name}</span></nc
-      <td style="font-weight:700">${fmt(prod.price)}</td>
-      <td style="color:var(--red-600)">${fmt(cost)}</td>
-      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
+      <td style="font-weight:700">${fmt(prod.price)}</nc
+      <td style="color:var(--red-600)">${fmt(cost)}</nc
+      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</nc
       <td>
         <div class="profit-bar-wrap">
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
@@ -529,6 +528,7 @@ function showSection(name) {
   const lnk = el('nav-' + name);
   if (lnk) lnk.classList.add('active');
   if (name === 'dashboard') loadAll();
+  if (name === 'landing') loadAll(); // 🔥 این خط اضافه شد
   window.scrollTo(0, 0);
 }
 
