@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrewDesk — Coffee Shop Management</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── TOAST CONTAINER ─────────────────────────────────────────────────────── -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ── NAVBAR ──────────────────────────────────────────────────────────────── -->
+<nav class="navbar">
+  <a class="navbar-brand" href="#" onclick="showSection('landing'); return false;">
+    <div class="logo-icon">☕</div>
+    <div>
+      <span class="brand-name">BrewDesk</span>
+      <span class="brand-sub">Coffee Management</span>
+    </div>
+  </a>
+  <div class="navbar-links">
+    <button class="nav-link active" id="nav-landing" onclick="showSection('landing')">Home</button>
+    <button class="nav-link" id="nav-dashboard" onclick="showSection('dashboard')">Dashboard</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     LANDING PAGE
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="section active" id="section-landing">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">☕ Built for Coffee Shop Owners</div>
+    <h1>Run Your Coffee Shop<br><span>Smarter Than Ever</span></h1>
+    <p>Track inventory, manage recipes, calculate profits, and never run out of stock again — all in one powerful dashboard.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="showSection('dashboard')" style="font-size:1rem;padding:1rem 2rem">
+        🚀 Try Demo Free
+      </button>
+      <button class="btn btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})" style="font-size:1rem;padding:1rem 2rem">
+        📖 Learn More ↓
+      </button>
+    </div>
+    <!-- Floating stat cards -->
+    <div style="display:flex;gap:1rem;margin-top:3rem;flex-wrap:wrap;justify-content:center">
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
+        <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Daily Revenue</div>
+        <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-revenue-hero">$0.00</div>
+        <div style="font-size:.75rem;color:#4ade80" id="hero-revenue-trend">☕ Loading...</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
+        <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Profit Margin</div>
+        <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-margin-hero">0%</div>
+        <div style="font-size:.75rem;color:#4ade80" id="hero-margin-trend">📈 Live from dashboard</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
+        <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Items Sold</div>
+        <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-items-hero">0</div>
+        <div style="font-size:.75rem;color:#4ade80" id="hero-items-trend">☕ Orders today</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section" id="features">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <span class="section-label">Features</span>
+      <h2 class="section-title">Everything You Need to Manage Your Shop</h2>
+      <p class="section-subtitle">From ingredient tracking to profit analysis — BrewDesk covers every aspect of your coffee business.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🧂</div>
+          <h3>Ingredient Management</h3>
+          <p>Track stock levels, set low-stock alerts, and manage costs per unit. Never run out of essential ingredients.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">☕</div>
+          <h3>Product Recipes</h3>
+          <p>Define recipes with exact ingredient amounts. Automatically calculate product cost and profit margin per item.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Sales Tracking</h3>
+          <p>One-click selling with automatic stock deduction. Real-time daily revenue, cost, and profit calculations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Profit Analysis</h3>
+          <p>Visual profit margin bars, cost breakdown per product, and leaderboard for your most profitable items.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚠️</div>
+          <h3>Smart Alerts</h3>
+          <p>Red highlighting for low-stock ingredients. Disable sell buttons when stock is insufficient to fill an order.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Search &amp; Filter</h3>
+          <p>Instantly search ingredients and filter products. Inline editing and modals for a smooth management experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section style="padding:5rem 2rem;background:var(--brown-900);text-align:center">
+    <div style="max-width:900px;margin:0 auto">
+      <span class="section-label" style="color:var(--brown-300)">How It Works</span>
+      <h2 class="section-title" style="color:var(--white);margin-bottom:3rem">Get Started in 3 Simple Steps</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem">
+        <div style="text-align:center">
+          <div style="width:64px;height:64px;background:var(--brown-600);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1rem">1️⃣</div>
+          <h3 style="color:var(--white);margin-bottom:.5rem">Add Ingredients</h3>
+          <p style="color:var(--brown-300);font-size:.9rem">Enter your stock items with quantities, units, and cost per unit to build your inventory.</p>
+        </div>
+        <div style="text-align:center">
+          <div style="width:64px;height:64px;background:var(--brown-600);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1rem">2️⃣</div>
+          <h3 style="color:var(--white);margin-bottom:.5rem">Build Products</h3>
+          <p style="color:var(--brown-300);font-size:.9rem">Create your menu items, set prices, and link recipes with exact ingredient amounts.</p>
+        </div>
+        <div style="text-align:center">
+          <div style="width:64px;height:64px;background:var(--brown-600);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1rem">3️⃣</div>
+          <h3 style="color:var(--white);margin-bottom:.5rem">Sell &amp; Profit</h3>
+          <p style="color:var(--brown-300);font-size:.9rem">Click Sell to record sales, auto-deduct stock, and track your daily profit in real-time.</p>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="showSection('dashboard')" style="margin-top:3rem;font-size:1rem;padding:.9rem 2.5rem">
+        Open Dashboard →
+      </button>
+    </div>
+  </section>
+
+  <!-- FEEDBACK SECTION -->
+  <section class="feedback-section" id="feedback">
+    <div style="text-align:center;margin-bottom:2rem">
+      <span class="section-label">Feedback</span>
+      <h2 class="section-title">What Do You Think?</h2>
+      <p style="color:var(--brown-500)">Help us improve BrewDesk by sharing your experience.</p>
+    </div>
+    <div class="feedback-card">
+      <h3 style="margin-bottom:.25rem">Leave a Review</h3>
+      <p style="font-size:.875rem;color:var(--brown-500);margin-bottom:1rem">Your feedback goes directly to our team.</p>
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-control" id="fb-name" placeholder="e.g. Jane the Barista" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rating</label>
+        <div class="star-rating" id="star-rating">
+          <span class="star" onclick="setRating(1)" title="1 Star">⭐</span>
+          <span class="star" onclick="setRating(2)" title="2 Stars">⭐</span>
+          <span class="star" onclick="setRating(3)" title="3 Stars">⭐</span>
+          <span class="star" onclick="setRating(4)" title="4 Stars">⭐</span>
+          <span class="star" onclick="setRating(5)" title="5 Stars">⭐</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-control" id="fb-message" placeholder="Tell us what you love or what we can improve..."></textarea>
+      </div>
+      <button class="btn btn-primary" id="fb-submit" onclick="submitFeedback()" style="width:100%;justify-content:center;padding:.875rem">
+        Submit Feedback ☕
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>☕ <strong>BrewDesk</strong> — Coffee Shop Inventory &amp; Sales Management</p>
+    <p style="margin-top:.5rem;font-size:.8rem">Built with Vanilla JS · No backend required · Mock data included</p>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="section" id="section-dashboard">
+  <div class="dashboard">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+      <div>
+        <h1>☕ Dashboard</h1>
+        <p>Real-time sales, inventory, and profit overview</p>
+      </div>
+      <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+        <div class="time-badge">🕐 <span id="live-clock">--:--:--</span></div>
+        <span class="badge badge-warning" id="demo-badge" style="display:none">🎭 Demo Mode</span>
+        <button class="btn btn-primary btn-sm" onclick="loadAll()">↺ Refresh</button>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-grid">
+      <div class="stat-card revenue">
+        <div class="stat-icon">💵</div>
+        <div class="stat-label">Today's Revenue</div>
+        <div class="stat-value" id="stat-revenue">$0.00</div>
+        <div class="stat-sub" id="stat-margin">0% margin today</div>
+      </div>
+      <div class="stat-card profit">
+        <div class="stat-icon">📈</div>
+        <div class="stat-label">Today's Profit</div>
+        <div class="stat-value" id="stat-profit">$0.00</div>
+        <div class="stat-sub">Net earnings after costs</div>
+      </div>
+      <div class="stat-card cost">
+        <div class="stat-icon">🏷️</div>
+        <div class="stat-label">Today's Cost</div>
+        <div class="stat-value" id="stat-cost">$0.00</div>
+        <div class="stat-sub">Ingredients consumed</div>
+      </div>
+      <div class="stat-card orders">
+        <div class="stat-icon">🧾</div>
+        <div class="stat-label">Transactions</div>
+        <div class="stat-value" id="stat-orders">0</div>
+        <div class="stat-sub">Orders processed today</div>
+      </div>
+      <div class="stat-card stock">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-label">Low Stock</div>
+        <div class="stat-value" id="stat-lowstock">0</div>
+        <div class="stat-sub"><span class="badge badge-success" id="stat-lowstock-badge">OK</span></div>
+      </div>
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div style="margin-bottom:1.5rem">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-sell" onclick="setDashTab('sell')">☕ Quick Sell</button>
+        <button class="tab-btn" id="tab-ingredients" onclick="setDashTab('ingredients')">🧂 Ingredients</button>
+        <button class="tab-btn" id="tab-products" onclick="setDashTab('products')">📦 Products</button>
+        <button class="tab-btn" id="tab-profit" onclick="setDashTab('profit')">📊 Profit Analysis</button>
+        <button class="tab-btn" id="tab-sales" onclick="setDashTab('sales')">📋 Sales Log</button>
+      </div>
+    </div>
+
+    <!-- ── SELL PANEL ──────────────────────────────────────────────────────── -->
+    <div id="dash-panel-sell">
+      <div class="grid-2">
+        <!-- Product Sell Cards -->
+        <div style="grid-column:1/-1">
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">☕ Quick Sell — Click to Sell</span>
+              <div style="font-size:.8rem;color:var(--brown-400)">Set quantity, then click Sell to record a sale and deduct stock</div>
+            </div>
+            <div class="panel-body">
+              <div class="sell-grid" id="sell-grid">
+                <div class="loading"><div class="spinner"></div>Loading products...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sales Log (mini) + Today Summary -->
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📋 Today's Sales</span>
+            <button class="btn btn-outline btn-sm" onclick="setDashTab('sales')">View All</button>
+          </div>
+          <div class="sales-log panel-scroll" id="sales-log">
+            <div class="empty-state"><div class="empty-icon">📋</div><p>No sales today yet.</p></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">📊 Top Profit Products</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Product</th><th>Price</th><th>Profit</th><th>Margin</th></tr>
+              </thead>
+              <tbody id="profit-tbody">
+                <tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── INGREDIENTS PANEL ───────────────────────────────────────────────── -->
+    <div id="dash-panel-ingredients" style="display:none">
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <span class="panel-title">🧂 Ingredients <span class="badge badge-neutral" id="ing-count">0 items</span></span>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="form-control" placeholder="Search ingredients..." id="ing-search"
+                oninput="debouncedIngSearch(this.value)" />
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openAddIngredient()">+ Add Ingredient</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Stock</th>
+                <th>Min. Threshold</th>
+                <th>Status</th>
+                <th>Cost/Unit</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ing-tbody">
+              <tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS PANEL ──────────────────────────────────────────────────── -->
+    <div id="dash-panel-products" style="display:none">
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <span class="panel-title">📦 Products <span class="badge badge-neutral" id="prod-count">0 items</span></span>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="form-control" placeholder="Filter products..." id="prod-search"
+                oninput="debouncedProdFilter(this.value)" />
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openAddProduct()">+ Add Product</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Cost</th>
+                <th>Profit</th>
+                <th>Margin</th>
+                <th>Recipe</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="prod-tbody">
+              <tr><td colspan="7"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFIT ANALYSIS PANEL ───────────────────────────────────────────── -->
+    <div id="dash-panel-profit" style="display:none">
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <span class="panel-title">📊 Profit Analysis — Ranked by Profit</span>
+          <span class="badge badge-success">Live Calculation</span>
+        </div>
+        <div style="padding:1.25rem 1.5rem;background:var(--brown-50);border-bottom:1px solid var(--brown-100)">
+          <div style="display:flex;gap:2rem;flex-wrap:wrap">
+            <div>
+              <div style="font-size:.75rem;color:var(--brown-500);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Today Revenue</div>
+              <div style="font-size:1.5rem;font-weight:800;color:var(--brown-900)" id="pa-revenue">$0.00</div>
+            </div>
+            <div>
+              <div style="font-size:.75rem;color:var(--brown-500);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Today Profit</div>
+              <div style="font-size:1.5rem;font-weight:800;color:var(--green-600)" id="pa-profit">$0.00</div>
+            </div>
+            <div>
+              <div style="font-size:.75rem;color:var(--brown-500);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Avg Margin</div>
+              <div style="font-size:1.5rem;font-weight:800;color:var(--brown-900)" id="pa-margin">0%</div>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>#</th><th>Product</th><th>Sale Price</th><th>Ingredient Cost</th><th>Gross Profit</th><th>Margin</th></tr>
+            </thead>
+            <tbody id="profit-full-tbody">
+              <tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SALES LOG PANEL ─────────────────────────────────────────────────── -->
+    <div id="dash-panel-sales" style="display:none">
+      <div class="panel fade-in">
+        <div class="panel-header">
+          <span class="panel-title">📋 Today's Sales Log</span>
+          <div style="display:flex;gap:.75rem;align-items:center">
+            <span class="badge badge-info" id="sales-count">0 transactions</span>
+            <button class="btn btn-outline btn-sm" onclick="refreshStats()">↺ Refresh</button>
+            <button class="btn btn-outline btn-sm" onclick="exportSalesCSV()">⬇ Export CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Time</th><th>Product</th><th>Qty</th><th>Revenue</th><th>Cost</th><th>Profit</th></tr>
+            </thead>
+            <tbody id="sales-full-tbody">
+              <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>No sales today.</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.dashboard -->
+</div><!-- /#section-dashboard -->
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     MODALS
+════════════════════════════════════════════════════════════════════════════ -->
+
+<!-- Ingredient Modal -->
+<div class="modal-overlay" id="ing-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="ing-modal-title">Add Ingredient</span>
+      <button class="modal-close" onclick="closeModal('ing-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Name *</label>
+        <input type="text" class="form-control" id="ing-name" placeholder="e.g. Arabica Coffee Beans" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group">
+          <label class="form-label">Current Stock *</label>
+          <input type="number" class="form-control" id="ing-stock" placeholder="e.g. 5000" min="0" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unit *</label>
+          <select class="form-control" id="ing-unit">
+            <option value="">-- Select --</option>
+            <option value="g">g (grams)</option>
+            <option value="kg">kg (kilograms)</option>
+            <option value="ml">ml (milliliters)</option>
+            <option value="L">L (liters)</option>
+            <option value="pcs">pcs (pieces)</option>
+            <option value="oz">oz (ounces)</option>
+            <option value="cup">cup</option>
+            <option value="tbsp">tbsp</option>
+            <option value="tsp">tsp</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group">
+          <label class="form-label">Low Stock Threshold *</label>
+          <input type="number" class="form-control" id="ing-threshold" placeholder="e.g. 500" min="0" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cost per Unit ($) *</label>
+          <input type="number" class="form-control" id="ing-cost" placeholder="e.g. 0.05" min="0" step="0.0001" />
+        </div>
+      </div>
+      <div style="background:var(--brown-50);border-radius:8px;padding:.875rem;font-size:.8rem;color:var(--brown-500)">
+        💡 <strong>Cost per unit</strong>: If 1kg of beans costs $50, then cost per gram = $0.05. This is used to calculate product profitability.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('ing-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveIngredient()">Save Ingredient</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product Modal -->
+<div class="modal-overlay" id="prod-modal">
+  <div class="modal" style="max-width:620px">
+    <div class="modal-header">
+      <span class="modal-title" id="prod-modal-title">Add Product</span>
+      <button class="modal-close" onclick="closeModal('prod-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="form-group" style="grid-column:1/-1">
+          <label class="form-label">Product Name *</label>
+          <input type="text" class="form-control" id="prod-name" placeholder="e.g. Vanilla Latte" />
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label class="form-label">Selling Price ($) *</label>
+          <input type="number" class="form-control" id="prod-price" placeholder="e.g. 5.50" min="0.01" step="0.01" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Recipe (Ingredients) *</label>
+        <div class="recipe-items" id="recipe-rows"></div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="addRecipeRow()">+ Add Ingredient</button>
+      </div>
+      <div style="background:var(--brown-50);border-radius:8px;padding:.875rem;font-size:.8rem;color:var(--brown-500)">
+        💡 The <strong>recipe</strong> defines how much of each ingredient is used when making one unit of this product. Costs are calculated automatically.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('prod-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
