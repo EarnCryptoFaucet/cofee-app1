@@ -108,6 +108,9 @@ function updateHeroStats() {
   const dailyRevenue = el('stat-revenue-hero');
   const profitMargin = el('stat-margin-hero');
   const itemsSold = el('stat-items-hero');
+  const revenueTrend = el('hero-revenue-trend');
+  const marginTrend = el('hero-margin-trend');
+  const itemsTrend = el('hero-items-trend');
   
   if (dailyRevenue) {
     dailyRevenue.textContent = fmt(state.stats.todayRevenue);
@@ -120,6 +123,22 @@ function updateHeroStats() {
       ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1)
       : 0;
     profitMargin.textContent = `${margin}%`;
+  }
+  
+  // به‌روزرسانی متن‌های روند (trends)
+  if (revenueTrend) {
+    const revenue = state.stats.todayRevenue || 0;
+    revenueTrend.innerHTML = `💰 ${fmt(revenue)} total today`;
+  }
+  if (marginTrend) {
+    const margin = state.stats.todayRevenue > 0 
+      ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1)
+      : 0;
+    marginTrend.innerHTML = `📈 ${margin}% profit margin`;
+  }
+  if (itemsTrend) {
+    const items = state.stats.todayTransactions || 0;
+    itemsTrend.innerHTML = `☕ ${items} orders today`;
   }
 }
 
@@ -159,17 +178,17 @@ function renderIngredients() {
           <div class="stock-bar"><div class="stock-bar-fill ${barClass}" style="width:${pct(ing.stock, ing.stock + ing.threshold * 3)}%"></div></div>
           <span style="font-weight:600;white-space:nowrap">${ing.stock} ${ing.unit}</span>
         </div>
-       </nc
-      <td>${ing.threshold} ${ing.unit}</nc
-      <td><span class="badge ${isLow ? 'badge-danger' : 'badge-success'}">${isLow ? '⚠ Low' : '✓ OK'}</span></nc
-      <td>$${(ing.costPerUnit).toFixed(4)}/${ing.unit}</nc
+      </td>
+      <td>${ing.threshold} ${ing.unit}</td>
+      <td><span class="badge ${isLow ? 'badge-danger' : 'badge-success'}">${isLow ? '⚠ Low' : '✓ OK'}</span></td>
+      <td>$${(ing.costPerUnit).toFixed(4)}/${ing.unit}</td>
       <td>
         <div style="display:flex;gap:.4rem">
           <button class="btn btn-outline btn-xs" onclick="openEditIngredient('${ing.id}')">✏ Edit</button>
           <button class="btn btn-danger btn-xs" onclick="deleteIngredient('${ing.id}')">🗑</button>
         </div>
-       </nc
-    表`;
+      </td>
+    </tr>`;
   }).join('');
   el('ing-count').textContent = `${state.ingredients.length} items`;
 }
@@ -253,7 +272,7 @@ function renderProducts() {
   );
   const tbody = el('prod-tbody');
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">☕</div><p>${state.prodFilter ? 'No results found' : 'No products yet. Add one!'}</p></div></nc表`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">☕</div><p>${state.prodFilter ? 'No results found' : 'No products yet. Add one!'}</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = filtered.map(prod => {
@@ -266,24 +285,24 @@ function renderProducts() {
     }).join('');
     return `
     <tr id="prod-row-${prod.id}">
-      <td><span style="font-weight:600">${prod.name}</span></nc
-      <td style="font-weight:700;color:var(--brown-700)">${fmt(prod.price)}</nc
-      <td style="color:var(--red-600)">${fmt(cost)}</nc
-      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</nc
+      <td><span style="font-weight:600">${prod.name}</span></td>
+      <td style="font-weight:700;color:var(--brown-700)">${fmt(prod.price)}</td>
+      <td style="color:var(--red-600)">${fmt(cost)}</td>
+      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
       <td>
         <div class="profit-bar-wrap">
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
           <span class="margin-text">${margin}%</span>
         </div>
-       </nc
-      <td><div style="max-width:260px;flex-wrap:wrap;display:flex">${recipe}</div></nc
+      </td>
+      <td><div style="max-width:260px;flex-wrap:wrap;display:flex">${recipe}</div></td>
       <td>
         <div style="display:flex;gap:.4rem">
           <button class="btn btn-outline btn-xs" onclick="openEditProduct('${prod.id}')">✏ Edit</button>
           <button class="btn btn-danger btn-xs" onclick="deleteProduct('${prod.id}')">🗑</button>
         </div>
-       </nc
-    表`;
+      </td>
+    </tr>`;
   }).join('');
   el('prod-count').textContent = `${state.products.length} items`;
 }
@@ -443,7 +462,7 @@ async function sellProduct(productId) {
 function renderProfitTable() {
   const tbody = el('profit-tbody');
   if (state.products.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📊</div><p>No products to analyze.</p></div></nc表`;
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📊</div><p>No products to analyze.</p></div></td></tr>`;
     return;
   }
   const sorted = [...state.products].sort((a, b) => {
@@ -458,17 +477,17 @@ function renderProfitTable() {
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
     return `
     <tr>
-      <td><span style="font-weight:600">${medal} ${prod.name}</span></nc
-      <td style="font-weight:700">${fmt(prod.price)}</nc
-      <td style="color:var(--red-600)">${fmt(cost)}</nc
-      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</nc
+      <td><span style="font-weight:600">${medal} ${prod.name}</span></td>
+      <td style="font-weight:700">${fmt(prod.price)}</td>
+      <td style="color:var(--red-600)">${fmt(cost)}</td>
+      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
       <td>
         <div class="profit-bar-wrap">
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
           <span class="margin-text">${margin}%</span>
         </div>
-       </nc
-    表`;
+      </td>
+    </tr>`;
   }).join('');
 }
 
@@ -528,7 +547,7 @@ function showSection(name) {
   const lnk = el('nav-' + name);
   if (lnk) lnk.classList.add('active');
   if (name === 'dashboard') loadAll();
-  if (name === 'landing') loadAll(); // 🔥 این خط اضافه شد
+  if (name === 'landing') loadAll();
   window.scrollTo(0, 0);
 }
 
