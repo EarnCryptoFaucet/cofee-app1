@@ -37,7 +37,6 @@ function el(id) { return document.getElementById(id); }
 function toast(msg, type = 'success') {
   const icons = { success: '✅', error: '❌', info: 'ℹ️' };
   const container = el('toast-container');
-  if (!container) return;
   const t = document.createElement('div');
   t.className = `toast ${type} fade-in`;
   t.innerHTML = `<span class="toast-icon">${icons[type]}</span><span>${msg}</span>`;
@@ -104,32 +103,6 @@ function renderAll() {
   renderSalesLog();
 }
 
-// ─── STATS ───────────────────────────────────────────────────────────────────
-function renderStats() {
-  const s = state.stats;
-  const revenueEl = el('stat-revenue');
-  const profitEl = el('stat-profit');
-  const costEl = el('stat-cost');
-  const ordersEl = el('stat-orders');
-  const lowstockEl = el('stat-lowstock');
-  const lowstockBadge = el('stat-lowstock-badge');
-  const marginEl = el('stat-margin');
-  
-  if (revenueEl) revenueEl.textContent = fmt(s.todayRevenue);
-  if (profitEl) profitEl.textContent = fmt(s.todayProfit);
-  if (costEl) costEl.textContent = fmt(s.todayCost);
-  if (ordersEl) ordersEl.textContent = s.todayTransactions || 0;
-  if (lowstockEl) lowstockEl.textContent = s.lowStockCount || 0;
-  if (lowstockBadge) {
-    lowstockBadge.className = `badge ${s.lowStockCount > 0 ? 'badge-danger' : 'badge-success'}`;
-    lowstockBadge.textContent = s.lowStockCount > 0 ? 'Alert' : 'OK';
-  }
-  if (marginEl) {
-    const margin = s.todayRevenue > 0 ? ((s.todayProfit / s.todayRevenue) * 100).toFixed(1) : 0;
-    marginEl.textContent = `${margin}% margin today`;
-  }
-}
-
 // ─── HERO STATS ────────────────────────────────────────────────────────────────
 function updateHeroStats() {
   const dailyRevenue = el('stat-revenue-hero');
@@ -139,37 +112,32 @@ function updateHeroStats() {
   const marginTrend = el('hero-margin-trend');
   const itemsTrend = el('hero-items-trend');
   
-  if (!dailyRevenue && !profitMargin && !itemsSold) {
-    return;
-  }
-  
-  if (dailyRevenue) {
-    dailyRevenue.textContent = fmt(state.stats.todayRevenue);
-  }
-  if (itemsSold) {
-    itemsSold.textContent = state.stats.todayTransactions || 0;
-  }
+  if (dailyRevenue) dailyRevenue.textContent = fmt(state.stats.todayRevenue);
+  if (itemsSold) itemsSold.textContent = state.stats.todayTransactions || 0;
   if (profitMargin) {
-    const margin = state.stats.todayRevenue > 0 
-      ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1)
-      : 0;
+    const margin = state.stats.todayRevenue > 0 ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1) : 0;
     profitMargin.textContent = `${margin}%`;
   }
-  
-  if (revenueTrend) {
-    const revenue = state.stats.todayRevenue || 0;
-    revenueTrend.innerHTML = `💰 ${fmt(revenue)} total today`;
-  }
+  if (revenueTrend) revenueTrend.innerHTML = `💰 ${fmt(state.stats.todayRevenue)} total today`;
   if (marginTrend) {
-    const margin = state.stats.todayRevenue > 0 
-      ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1)
-      : 0;
+    const margin = state.stats.todayRevenue > 0 ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1) : 0;
     marginTrend.innerHTML = `📈 ${margin}% profit margin`;
   }
-  if (itemsTrend) {
-    const items = state.stats.todayTransactions || 0;
-    itemsTrend.innerHTML = `☕ ${items} orders today`;
-  }
+  if (itemsTrend) itemsTrend.innerHTML = `☕ ${state.stats.todayTransactions || 0} orders today`;
+}
+
+// ─── STATS ───────────────────────────────────────────────────────────────────
+function renderStats() {
+  const s = state.stats;
+  el('stat-revenue').textContent = fmt(s.todayRevenue);
+  el('stat-profit').textContent = fmt(s.todayProfit);
+  el('stat-cost').textContent = fmt(s.todayCost);
+  el('stat-orders').textContent = s.todayTransactions || 0;
+  el('stat-lowstock').textContent = s.lowStockCount || 0;
+  el('stat-lowstock-badge').className = `badge ${s.lowStockCount > 0 ? 'badge-danger' : 'badge-success'}`;
+  el('stat-lowstock-badge').textContent = s.lowStockCount > 0 ? 'Alert' : 'OK';
+  const margin = s.todayRevenue > 0 ? ((s.todayProfit / s.todayRevenue) * 100).toFixed(1) : 0;
+  el('stat-margin').textContent = `${margin}% margin today`;
 }
 
 // ─── INGREDIENTS ─────────────────────────────────────────────────────────────
@@ -178,80 +146,67 @@ function renderIngredients() {
     i.name.toLowerCase().includes(state.ingSearch.toLowerCase())
   );
   const tbody = el('ing-tbody');
-  if (!tbody) return;
   if (filtered.length === 0) {
-    tbody.innerHTML = `</table><td colspan="6"><div class="empty-state"><div class="empty-icon">🧂</div><p>${state.ingSearch ? 'No results found' : 'No ingredients yet. Add one to get started!'}</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🧂</div><p>${state.ingSearch ? 'No results found' : 'No ingredients yet. Add one to get started!'}</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = filtered.map(ing => {
+    const stockPct = pct(ing.stock, ing.stock + ing.threshold);
     const isLow = ing.stock <= ing.threshold;
     const barClass = isLow ? 'low' : (ing.stock <= ing.threshold * 2 ? 'warn' : 'ok');
     return `
     <tr class="${isLow ? 'row-low' : ''}" id="ing-row-${ing.id}">
-      <td><span style="font-weight:600">${ing.name}</span></td>
+      <td><span class="font-medium" style="font-weight:600">${ing.name}</span></td>
       <td>
         <div class="stock-bar-wrap">
           <div class="stock-bar"><div class="stock-bar-fill ${barClass}" style="width:${pct(ing.stock, ing.stock + ing.threshold * 3)}%"></div></div>
           <span style="font-weight:600;white-space:nowrap">${ing.stock} ${ing.unit}</span>
         </div>
-       </nc
-      <td>${ing.threshold} ${ing.unit}</nc
-      <td><span class="badge ${isLow ? 'badge-danger' : 'badge-success'}">${isLow ? '⚠ Low' : '✓ OK'}</span></nc
-      <td>$${(ing.costPerUnit).toFixed(4)}/${ing.unit}</nc
+       </td
+      <td>${ing.threshold} ${ing.unit}</td
+      <td><span class="badge ${isLow ? 'badge-danger' : 'badge-success'}">${isLow ? '⚠ Low' : '✓ OK'}</span></td
+      <td>$${(ing.costPerUnit).toFixed(4)}/${ing.unit}</td
       <td>
         <div style="display:flex;gap:.4rem">
           <button class="btn btn-outline btn-xs" onclick="openEditIngredient('${ing.id}')">✏ Edit</button>
           <button class="btn btn-danger btn-xs" onclick="deleteIngredient('${ing.id}')">🗑</button>
         </div>
-       </nc
+       </td
     表`;
   }).join('');
-  const ingCount = el('ing-count');
-  if (ingCount) ingCount.textContent = `${state.ingredients.length} items`;
+  el('ing-count').textContent = `${state.ingredients.length} items`;
 }
 
 // ─── INGREDIENT MODAL ─────────────────────────────────────────────────────────
 function openAddIngredient() {
   state.editingIngredient = null;
-  const title = el('ing-modal-title');
-  if (title) title.textContent = 'Add Ingredient';
-  const nameEl = el('ing-name');
-  const stockEl = el('ing-stock');
-  const unitEl = el('ing-unit');
-  const thresholdEl = el('ing-threshold');
-  const costEl = el('ing-cost');
-  if (nameEl) nameEl.value = '';
-  if (stockEl) stockEl.value = '';
-  if (unitEl) unitEl.value = '';
-  if (thresholdEl) thresholdEl.value = '';
-  if (costEl) costEl.value = '';
+  el('ing-modal-title').textContent = 'Add Ingredient';
+  el('ing-name').value = '';
+  el('ing-stock').value = '';
+  el('ing-unit').value = '';
+  el('ing-threshold').value = '';
+  el('ing-cost').value = '';
   openModal('ing-modal');
 }
 function openEditIngredient(id) {
   const ing = state.ingredients.find(i => i.id === id);
   if (!ing) return;
   state.editingIngredient = ing;
-  const title = el('ing-modal-title');
-  if (title) title.textContent = 'Edit Ingredient';
-  const nameEl = el('ing-name');
-  const stockEl = el('ing-stock');
-  const unitEl = el('ing-unit');
-  const thresholdEl = el('ing-threshold');
-  const costEl = el('ing-cost');
-  if (nameEl) nameEl.value = ing.name;
-  if (stockEl) stockEl.value = ing.stock;
-  if (unitEl) unitEl.value = ing.unit;
-  if (thresholdEl) thresholdEl.value = ing.threshold;
-  if (costEl) costEl.value = ing.costPerUnit;
+  el('ing-modal-title').textContent = 'Edit Ingredient';
+  el('ing-name').value = ing.name;
+  el('ing-stock').value = ing.stock;
+  el('ing-unit').value = ing.unit;
+  el('ing-threshold').value = ing.threshold;
+  el('ing-cost').value = ing.costPerUnit;
   openModal('ing-modal');
 }
 async function saveIngredient() {
   const body = {
-    name: el('ing-name')?.value.trim() || '',
-    stock: parseFloat(el('ing-stock')?.value || '0'),
-    unit: el('ing-unit')?.value.trim() || '',
-    threshold: parseFloat(el('ing-threshold')?.value || '0'),
-    costPerUnit: parseFloat(el('ing-cost')?.value || '0')
+    name: el('ing-name').value.trim(),
+    stock: parseFloat(el('ing-stock').value),
+    unit: el('ing-unit').value.trim(),
+    threshold: parseFloat(el('ing-threshold').value),
+    costPerUnit: parseFloat(el('ing-cost').value)
   };
   if (!body.name || !body.unit || isNaN(body.stock) || isNaN(body.threshold) || isNaN(body.costPerUnit)) {
     toast('Please fill all fields correctly.', 'error'); return;
@@ -300,7 +255,6 @@ function renderProducts() {
     p.name.toLowerCase().includes(search)
   );
   const tbody = el('prod-tbody');
-  if (!tbody) return;
   if (filtered.length === 0) {
     tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">☕</div><p>${state.prodFilter ? 'No results found' : 'No products yet. Add one!'}</p></div></td></tr>`;
     return;
@@ -316,9 +270,9 @@ function renderProducts() {
     return `
     <tr id="prod-row-${prod.id}">
       <td><span style="font-weight:600">${prod.name}</span></td>
-      <td style="font-weight:700">${fmt(prod.price)}</td>
-      <td style="color:var(--red-600)">${fmt(cost)}</td>
-      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
+      <td style="font-weight:700;color:var(--brown-700)">${fmt(prod.price)}</td
+      <td style="color:var(--red-600)">${fmt(cost)}</td
+      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td
       <td>
         <div class="profit-bar-wrap">
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
@@ -334,20 +288,16 @@ function renderProducts() {
        </td
     表`;
   }).join('');
-  const prodCount = el('prod-count');
-  if (prodCount) prodCount.textContent = `${state.products.length} items`;
+  el('prod-count').textContent = `${state.products.length} items`;
 }
 
 // ─── PRODUCT MODAL ────────────────────────────────────────────────────────────
 let recipeRows = [];
 function openAddProduct() {
   state.editingProduct = null;
-  const title = el('prod-modal-title');
-  if (title) title.textContent = 'Add Product';
-  const nameEl = el('prod-name');
-  const priceEl = el('prod-price');
-  if (nameEl) nameEl.value = '';
-  if (priceEl) priceEl.value = '';
+  el('prod-modal-title').textContent = 'Add Product';
+  el('prod-name').value = '';
+  el('prod-price').value = '';
   recipeRows = [];
   renderRecipeRows();
   openModal('prod-modal');
@@ -356,19 +306,18 @@ function openEditProduct(id) {
   const prod = state.products.find(p => p.id === id);
   if (!prod) return;
   state.editingProduct = prod;
-  const title = el('prod-modal-title');
-  if (title) title.textContent = 'Edit Product';
-  const nameEl = el('prod-name');
-  const priceEl = el('prod-price');
-  if (nameEl) nameEl.value = prod.name;
-  if (priceEl) priceEl.value = prod.price;
+  el('prod-modal-title').textContent = 'Edit Product';
+  el('prod-name').value = prod.name;
+  el('prod-price').value = prod.price;
   recipeRows = prod.recipe.map(r => ({ ingredientId: r.ingredientId, amount: r.amount }));
   renderRecipeRows();
   openModal('prod-modal');
 }
 function renderRecipeRows() {
   const container = el('recipe-rows');
-  if (!container) return;
+  const ingOptions = state.ingredients.map(i =>
+    `<option value="${i.id}">${i.name} (${i.unit})</option>`
+  ).join('');
   container.innerHTML = recipeRows.map((row, idx) => `
     <div class="recipe-row">
       <select class="form-control" onchange="recipeRows[${idx}].ingredientId=this.value">
@@ -392,8 +341,8 @@ function removeRecipeRow(idx) {
   renderRecipeRows();
 }
 async function saveProduct() {
-  const name = el('prod-name')?.value.trim() || '';
-  const price = parseFloat(el('prod-price')?.value || '0');
+  const name = el('prod-name').value.trim();
+  const price = parseFloat(el('prod-price').value);
   if (!name || isNaN(price) || price <= 0) {
     toast('Please enter a valid name and price.', 'error'); return;
   }
@@ -438,7 +387,6 @@ async function deleteProduct(id) {
 // ─── SELL PANEL ──────────────────────────────────────────────────────────────
 function renderSellPanel() {
   const container = el('sell-grid');
-  if (!container) return;
   if (state.products.length === 0) {
     container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">☕</div><p>No products yet. Add products to start selling.</p></div>`;
     return;
@@ -497,7 +445,6 @@ async function sellProduct(productId) {
 // ─── PROFIT TABLE ────────────────────────────────────────────────────────────
 function renderProfitTable() {
   const tbody = el('profit-tbody');
-  if (!tbody) return;
   if (state.products.length === 0) {
     tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📊</div><p>No products to analyze.</p></div></td></tr>`;
     return;
@@ -515,9 +462,9 @@ function renderProfitTable() {
     return `
     <tr>
       <td><span style="font-weight:600">${medal} ${prod.name}</span></td>
-      <td style="font-weight:700">${fmt(prod.price)}</td>
-      <td style="color:var(--red-600)">${fmt(cost)}</td>
-      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
+      <td style="font-weight:700">${fmt(prod.price)}</td
+      <td style="color:var(--red-600)">${fmt(cost)}</td
+      <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td
       <td>
         <div class="profit-bar-wrap">
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
@@ -531,7 +478,6 @@ function renderProfitTable() {
 // ─── SALES LOG ───────────────────────────────────────────────────────────────
 function renderSalesLog() {
   const container = el('sales-log');
-  if (!container) return;
   if (state.sales.length === 0) {
     container.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>No sales today yet.</p></div>`;
     return;
@@ -551,17 +497,13 @@ function renderSalesLog() {
 // ─── MODALS ───────────────────────────────────────────────────────────────────
 function openModal(id) {
   const overlay = el(id);
-  if (overlay) {
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 function closeModal(id) {
   const overlay = el(id);
-  if (overlay) {
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
 }
 // Close on overlay click
 document.addEventListener('click', e => {
@@ -589,7 +531,7 @@ function showSection(name) {
   const lnk = el('nav-' + name);
   if (lnk) lnk.classList.add('active');
   if (name === 'dashboard') loadAll();
-  if (name === 'landing') loadAll();
+  if (name === 'landing') loadAll();  // ← اضافه شده
   window.scrollTo(0, 0);
 }
 
@@ -602,15 +544,14 @@ function setRating(n) {
 }
 
 async function submitFeedback() {
-  const name = el('fb-name')?.value.trim() || '';
-  const message = el('fb-message')?.value.trim() || '';
+  const name = el('fb-name').value.trim();
+  const message = el('fb-message').value.trim();
   const rating = state.selectedRating;
   if (!name) { toast('Please enter your name.', 'error'); return; }
   if (!rating) { toast('Please select a rating.', 'error'); return; }
   if (!message) { toast('Please write a message.', 'error'); return; }
   const btn = el('fb-submit');
-  if (btn) btn.disabled = true;
-  if (btn) btn.textContent = 'Sending...';
+  btn.disabled = true; btn.textContent = 'Sending...';
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
       method: 'POST',
@@ -627,16 +568,13 @@ async function submitFeedback() {
       throw new Error(err || 'Supabase error');
     }
     toast('Thank you for your feedback! ☕', 'success');
-    const nameEl = el('fb-name');
-    const messageEl = el('fb-message');
-    if (nameEl) nameEl.value = '';
-    if (messageEl) messageEl.value = '';
+    el('fb-name').value = '';
+    el('fb-message').value = '';
     setRating(0);
   } catch (e) {
     toast('Failed to send feedback: ' + e.message, 'error');
   } finally {
-    if (btn) btn.disabled = false;
-    if (btn) btn.textContent = 'Submit Feedback';
+    btn.disabled = false; btn.textContent = 'Submit Feedback';
   }
 }
 
@@ -648,8 +586,7 @@ const debouncedProdFilter = debounce(v => { state.prodFilter = v; renderProducts
 function setDashTab(tab) {
   state.activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  const tabBtn = el('tab-' + tab);
-  if (tabBtn) tabBtn.classList.add('active');
+  el('tab-' + tab).classList.add('active');
   ['sell', 'ingredients', 'products', 'profit', 'sales'].forEach(t => {
     const panel = el('dash-panel-' + t);
     if (panel) panel.style.display = t === tab ? 'block' : 'none';
