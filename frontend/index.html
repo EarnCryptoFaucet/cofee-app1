@@ -606,5 +606,29 @@ refreshStats = async function() {
   updateProfitPanelStats();
 };
 </script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  // 🚀 Try Demo → Dashboard
+  const demoBtn = document.getElementById("try-demo-btn");
+  if (demoBtn) {
+    demoBtn.addEventListener("click", function () {
+      showSection("dashboard");
+    });
+  }
+
+  // 📖 Learn More → scroll smooth
+  const learnBtn = document.getElementById("learn-more-btn");
+  if (learnBtn) {
+    learnBtn.addEventListener("click", function () {
+      const el = document.getElementById("features");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
+});
+</script>
 </body>
 </html>
