@@ -1036,3 +1036,72 @@ tr:hover td { background: var(--brown-50); }
 
 .pulse { animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .6; } }
+/* ─── FIX FOR TOP PROFIT PRODUCTS SECTION ──────────────────────────────────── */
+
+/* Fix for profit table in quick sell panel */
+#dash-panel-sell .panel:last-child .table-wrap {
+    overflow-x: auto;
+}
+
+#dash-panel-sell table {
+    min-width: 100%;
+    width: 100%;
+}
+
+#dash-panel-sell th,
+#dash-panel-sell td {
+    white-space: nowrap;
+}
+
+/* Better display for profit items on mobile */
+@media(max-width: 768px) {
+    #dash-panel-sell .panel:last-child .panel-body {
+        padding: 0.75rem;
+    }
+    
+    #dash-panel-sell table {
+        font-size: 0.75rem;
+    }
+    
+    #dash-panel-sell th,
+    #dash-panel-sell td {
+        padding: 0.5rem 0.6rem;
+    }
+    
+    /* Make profit bar smaller on mobile */
+    #dash-panel-sell .profit-bar-wrap {
+        gap: 0.4rem;
+        min-width: 80px;
+    }
+    
+    #dash-panel-sell .profit-bar {
+        height: 5px;
+    }
+    
+    #dash-panel-sell .profit-bar-wrap span {
+        font-size: 0.7rem;
+    }
+}
+
+@media(max-width: 480px) {
+    #dash-panel-sell .panel:last-child .panel-header {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    #dash-panel-sell table {
+        min-width: 380px;
+    }
+    
+    #dash-panel-sell th,
+    #dash-panel-sell td {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.7rem;
+    }
+    
+    /* Hide one column on very small screens if needed */
+    #dash-panel-sell th:nth-child(3),
+    #dash-panel-sell td:nth-child(3) {
+        display: none;
+    }
+}
