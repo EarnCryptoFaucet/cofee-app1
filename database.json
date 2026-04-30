@@ -1,0 +1,107 @@
+{
+  "ingredients": [
+    {
+      "id": "ing-001",
+      "name": "Arabica Coffee Beans",
+      "stock": 5000,
+      "unit": "g",
+      "threshold": 500,
+      "costPerUnit": 0.05
+    },
+    {
+      "id": "ing-002",
+      "name": "Whole Milk",
+      "stock": 10000,
+      "unit": "ml",
+      "threshold": 1000,
+      "costPerUnit": 0.002
+    },
+    {
+      "id": "ing-003",
+      "name": "Sugar",
+      "stock": 3000,
+      "unit": "g",
+      "threshold": 300,
+      "costPerUnit": 0.001
+    },
+    {
+      "id": "ing-004",
+      "name": "Vanilla Syrup",
+      "stock": 2000,
+      "unit": "ml",
+      "threshold": 200,
+      "costPerUnit": 0.01
+    },
+    {
+      "id": "ing-005",
+      "name": "Cocoa Powder",
+      "stock": 1000,
+      "unit": "g",
+      "threshold": 100,
+      "costPerUnit": 0.015
+    },
+    {
+      "id": "ing-006",
+      "name": "Whipped Cream",
+      "stock": 800,
+      "unit": "ml",
+      "threshold": 150,
+      "costPerUnit": 0.008
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-001",
+      "name": "Espresso",
+      "price": 3.50,
+      "recipe": [
+        { "ingredientId": "ing-001", "amount": 18 },
+        { "ingredientId": "ing-003", "amount": 5 }
+      ]
+    },
+    {
+      "id": "prod-002",
+      "name": "Cappuccino",
+      "price": 4.50,
+      "recipe": [
+        { "ingredientId": "ing-001", "amount": 18 },
+        { "ingredientId": "ing-002", "amount": 150 },
+        { "ingredientId": "ing-003", "amount": 10 }
+      ]
+    },
+    {
+      "id": "prod-003",
+      "name": "Vanilla Latte",
+      "price": 5.50,
+      "recipe": [
+        { "ingredientId": "ing-001", "amount": 18 },
+        { "ingredientId": "ing-002", "amount": 200 },
+        { "ingredientId": "ing-003", "amount": 10 },
+        { "ingredientId": "ing-004", "amount": 30 }
+      ]
+    },
+    {
+      "id": "prod-004",
+      "name": "Mocha",
+      "price": 5.00,
+      "recipe": [
+        { "ingredientId": "ing-001", "amount": 18 },
+        { "ingredientId": "ing-002", "amount": 180 },
+        { "ingredientId": "ing-003", "amount": 15 },
+        { "ingredientId": "ing-005", "amount": 15 }
+      ]
+    },
+    {
+      "id": "prod-005",
+      "name": "Hot Chocolate",
+      "price": 4.00,
+      "recipe": [
+        { "ingredientId": "ing-002", "amount": 250 },
+        { "ingredientId": "ing-003", "amount": 20 },
+        { "ingredientId": "ing-005", "amount": 20 },
+        { "ingredientId": "ing-006", "amount": 30 }
+      ]
+    }
+  ],
+  "sales": []
+}
