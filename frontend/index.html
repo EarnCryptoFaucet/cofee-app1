@@ -52,17 +52,17 @@
       <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
         <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Daily Revenue</div>
         <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-revenue-hero">$1,240</div>
-        <div style="font-size:.75rem;color:#4ade80">↑ 18% vs yesterday</div>
+        <div style="font-size:.75rem;color:#4ade80" id="hero-revenue-trend">↑ 18% vs yesterday</div>
       </div>
       <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
         <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Profit Margin</div>
         <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-margin-hero">68.4%</div>
-        <div style="font-size:.75rem;color:#4ade80">↑ Excellent margin</div>
+        <div style="font-size:.75rem;color:#4ade80" id="hero-margin-trend">↑ Excellent margin</div>
       </div>
       <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
         <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Items Sold</div>
         <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-items-hero">284</div>
-        <div style="font-size:.75rem;color:#4ade80">↑ 32 today</div>
+        <div style="font-size:.75rem;color:#4ade80" id="hero-items-trend">↑ 32 today</div>
       </div>
     </div>
   </section>
@@ -315,12 +315,12 @@
               </tr>
             </thead>
             <tbody id="ing-tbody">
-              <tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+              <tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading...</div><\/td><\/tr>
+            <\/tbody>
+          <\/table>
+        <\/div>
+      <\/div>
+    <\/div>
 
     <!-- ── PRODUCTS PANEL ──────────────────────────────────────────────────── -->
     <div id="dash-panel-products" style="display:none">
@@ -337,7 +337,7 @@
           </div>
         </div>
         <div class="table-wrap">
-          <table>
+          <tr>
             <thead>
               <tr>
                 <th>Name</th>
@@ -350,12 +350,12 @@
               </tr>
             </thead>
             <tbody id="prod-tbody">
-              <tr><td colspan="7"><div class="loading"><div class="spinner"></div>Loading...</div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+              <tr><td colspan="7"><div class="loading"><div class="spinner"></div>Loading...</div><\/td><\/tr>
+            <\/tbody>
+          <\/table>
+        <\/div>
+      <\/div>
+    <\/div>
 
     <!-- ── PROFIT ANALYSIS PANEL ───────────────────────────────────────────── -->
     <div id="dash-panel-profit" style="display:none">
@@ -386,12 +386,12 @@
               <tr><th>#</th><th>Product</th><th>Sale Price</th><th>Ingredient Cost</th><th>Gross Profit</th><th>Margin</th></tr>
             </thead>
             <tbody id="profit-full-tbody">
-              <tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+              <tr><td colspan="6"><div class="loading"><div class="spinner"></div></div><\/td><\/tr>
+            <\/tbody>
+          <\/table>
+        <\/div>
+      <\/div>
+    <\/div>
 
     <!-- ── SALES LOG PANEL ─────────────────────────────────────────────────── -->
     <div id="dash-panel-sales" style="display:none">
@@ -409,15 +409,15 @@
               <tr><th>Time</th><th>Product</th><th>Qty</th><th>Revenue</th><th>Cost</th><th>Profit</th></tr>
             </thead>
             <tbody id="sales-full-tbody">
-              <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>No sales today.</p></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+              <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>No sales today.</p></div><\/td><\/tr>
+            <\/tbody>
+          <\/table>
+        <\/div>
+      <\/div>
+    <\/div>
 
-  </div><!-- /.dashboard -->
-</div><!-- /#section-dashboard -->
+  <\/div><!-- /.dashboard -->
+<\/div><!-- /#section-dashboard -->
 
 <!-- ════════════════════════════════════════════════════════════════════════════
      MODALS
@@ -529,18 +529,18 @@ function renderFullSalesTable() {
   if (count) count.textContent = `${state.sales.length} transactions`;
 
   if (state.sales.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>No sales today yet.</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📋</div><p>No sales today yet.</p></div><\/td><\/tr>`;
     return;
   }
   tbody.innerHTML = state.sales.map((s, i) => `
     <tr class="${i === 0 ? 'tr-highlight' : ''}">
-      <td style="color:var(--brown-400);font-size:.8rem">${fmtTime(s.timestamp)}</td>
-      <td style="font-weight:600">${s.productName}</td>
-      <td><span class="badge badge-neutral">×${s.quantity}</span></td>
-      <td style="font-weight:700">${fmt(s.revenue)}</td>
-      <td style="color:var(--red-600)">${fmt(s.cost)}</td>
-      <td style="color:var(--green-600);font-weight:700">${fmt(s.profit)}</td>
-    </tr>
+      <td style="color:var(--brown-400);font-size:.8rem">${fmtTime(s.timestamp)}<\/td>
+      <td style="font-weight:600">${s.productName}<\/td>
+      <td><span class="badge badge-neutral">×${s.quantity}<\/span><\/td>
+      <td style="font-weight:700">${fmt(s.revenue)}<\/td>
+      <td style="color:var(--red-600)">${fmt(s.cost)}<\/td>
+      <td style="color:var(--green-600);font-weight:700">${fmt(s.profit)}<\/td>
+    `,`
   `).join('');
 }
 
@@ -556,7 +556,7 @@ function renderFullProfitTable() {
   const tbody = el('profit-full-tbody');
   if (!tbody) return;
   if (state.products.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📊</div><p>No products added yet.</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📊</div><p>No products added yet.</p></div><\/td><\/tr>`;
     return;
   }
   const sorted = [...state.products].sort((a, b) => {
@@ -572,19 +572,19 @@ function renderFullProfitTable() {
     const marginColor = margin >= 60 ? 'var(--green-600)' : margin >= 40 ? 'var(--yellow-500)' : 'var(--red-500)';
     return `
     <tr>
-      <td style="font-weight:700;color:var(--brown-500)">${medal}</td>
-      <td style="font-weight:600">${prod.name}</td>
-      <td style="font-weight:700">${fmt(prod.price)}</td>
-      <td style="color:var(--red-600)">${fmt(cost)}</td>
-      <td style="color:var(--green-600);font-weight:800;font-size:1rem">${fmt(profit)}</td>
+      <td style="font-weight:700;color:var(--brown-500)">${medal}<\/td>
+      <td style="font-weight:600">${prod.name}<\/td>
+      <td style="font-weight:700">${fmt(prod.price)}<\/td>
+      <td style="color:var(--red-600)">${fmt(cost)}<\/td>
+      <td style="color:var(--green-600);font-weight:800;font-size:1rem">${fmt(profit)}<\/td>
       <td>
         <div class="profit-bar-wrap">
-          <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
-          <span style="font-size:.8rem;font-weight:700;color:${marginColor};white-space:nowrap">${margin}%</span>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
+          <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"><\/div><\/div>
+          <span style="font-size:.8rem;font-weight:700;color:${marginColor};white-space:nowrap">${margin}%<\/span>
+        <\/div>
+      <\/td>
+    `,`
+  `).join('');
 }
 
 function updateProfitPanelStats() {
