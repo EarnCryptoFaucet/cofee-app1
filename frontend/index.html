@@ -51,17 +51,17 @@
     <div style="display:flex;gap:1rem;margin-top:3rem;flex-wrap:wrap;justify-content:center">
       <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
         <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Daily Revenue</div>
-        <div style="font-size:1.6rem;font-weight:800;color:#fff">$1,240</div>
+        <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-revenue-hero">$1,240</div>
         <div style="font-size:.75rem;color:#4ade80">↑ 18% vs yesterday</div>
       </div>
       <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
         <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Profit Margin</div>
-        <div style="font-size:1.6rem;font-weight:800;color:#fff">68.4%</div>
+        <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-margin-hero">68.4%</div>
         <div style="font-size:.75rem;color:#4ade80">↑ Excellent margin</div>
       </div>
       <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;backdrop-filter:blur(8px)">
         <div style="font-size:.75rem;color:var(--brown-300);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Items Sold</div>
-        <div style="font-size:1.6rem;font-weight:800;color:#fff">284</div>
+        <div style="font-size:1.6rem;font-weight:800;color:#fff" id="stat-items-hero">284</div>
         <div style="font-size:.75rem;color:#4ade80">↑ 32 today</div>
       </div>
     </div>
@@ -276,7 +276,9 @@
           </div>
           <div class="panel-body">
             <table>
-              <thead><tr><th>Product</th><th>Price</th><th>Profit</th><th>Margin</th></tr></thead>
+              <thead>
+                <tr><th>Product</th><th>Price</th><th>Profit</th><th>Margin</th></tr>
+              </thead>
               <tbody id="profit-tbody">
                 <tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr>
               </tbody>
