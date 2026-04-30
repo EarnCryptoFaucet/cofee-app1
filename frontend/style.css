@@ -1068,18 +1068,22 @@ tr:hover td { background: var(--brown-50); }
         padding: 0.5rem 0.6rem;
     }
     
-    /* Make profit bar smaller on mobile */
+    /* Fix for profit bar on tablet */
     #dash-panel-sell .profit-bar-wrap {
         gap: 0.4rem;
-        min-width: 80px;
+        min-width: 100px;
+        max-width: 150px;
     }
     
     #dash-panel-sell .profit-bar {
-        height: 5px;
+        height: 6px;
+        min-width: 40px;
     }
     
     #dash-panel-sell .profit-bar-wrap span {
         font-size: 0.7rem;
+        min-width: 35px;
+        text-align: right;
     }
 }
 
@@ -1089,14 +1093,14 @@ tr:hover td { background: var(--brown-50); }
         flex-wrap: wrap;
     }
     
-    /* اجازه اسکرroll افقی به جدول */
+    /* Allow horizontal scroll */
     #dash-panel-sell .panel:last-child .table-wrap {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
     
     #dash-panel-sell table {
-        min-width: 450px;
+        min-width: 500px;
         font-size: 0.7rem;
     }
     
@@ -1105,18 +1109,22 @@ tr:hover td { background: var(--brown-50); }
         padding: 0.4rem 0.5rem;
     }
     
-    /* حذف نکن! فقط فونت رو کوچیکتر کن */
-    #dash-panel-sell td:nth-child(5) {
-        font-size: 0.7rem;
-    }
-    
-    /* Profit bar در موبایل */
+    /* Fix for profit bar - simpler display on mobile */
     #dash-panel-sell .profit-bar-wrap {
-        min-width: 70px;
-        gap: 0.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-width: 85px;
     }
     
+    /* Hide the bar itself on very small screens, show only percentage */
     #dash-panel-sell .profit-bar {
-        height: 4px;
+        display: none;
+    }
+    
+    #dash-panel-sell .profit-bar-wrap span {
+        font-size: 0.75rem;
+        font-weight: 700;
+        min-width: auto;
     }
 }
