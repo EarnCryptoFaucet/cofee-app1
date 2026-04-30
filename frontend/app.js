@@ -73,6 +73,7 @@ async function loadAll() {
     state.stats = stats;
     state.sales = todaySales.sales || [];
     renderAll();
+    updateHeroStats(); // اضافه شد: آمار هوم پیج رو به‌روز کن
   } catch (e) {
     toast('Failed to load data: ' + e.message, 'error');
   }
@@ -88,6 +89,7 @@ async function refreshStats() {
     state.sales = todaySales.sales || [];
     renderStats();
     renderSalesLog();
+    updateHeroStats(); // اضافه شد: آمار هوم پیج رو به‌روز کن
   } catch (e) { console.error(e); }
 }
 
@@ -99,6 +101,27 @@ function renderAll() {
   renderSellPanel();
   renderProfitTable();
   renderSalesLog();
+}
+
+// ─── HERO STATS (NEW) ────────────────────────────────────────────────────────
+function updateHeroStats() {
+  // به‌روزرسانی آمارهای هوم پیج با دیتای واقعی
+  const dailyRevenue = el('stat-revenue-hero');
+  const profitMargin = el('stat-margin-hero');
+  const itemsSold = el('stat-items-hero');
+  
+  if (dailyRevenue) {
+    dailyRevenue.textContent = fmt(state.stats.todayRevenue);
+  }
+  if (itemsSold) {
+    itemsSold.textContent = state.stats.todayTransactions || 0;
+  }
+  if (profitMargin) {
+    const margin = state.stats.todayRevenue > 0 
+      ? ((state.stats.todayProfit / state.stats.todayRevenue) * 100).toFixed(1)
+      : 0;
+    profitMargin.textContent = `${margin}%`;
+  }
 }
 
 // ─── STATS ───────────────────────────────────────────────────────────────────
@@ -137,17 +160,17 @@ function renderIngredients() {
           <div class="stock-bar"><div class="stock-bar-fill ${barClass}" style="width:${pct(ing.stock, ing.stock + ing.threshold * 3)}%"></div></div>
           <span style="font-weight:600;white-space:nowrap">${ing.stock} ${ing.unit}</span>
         </div>
-      </td>
-      <td>${ing.threshold} ${ing.unit}</td>
-      <td><span class="badge ${isLow ? 'badge-danger' : 'badge-success'}">${isLow ? '⚠ Low' : '✓ OK'}</span></td>
-      <td>$${(ing.costPerUnit).toFixed(4)}/${ing.unit}</td>
+       </nc
+      <td>${ing.threshold} ${ing.unit}</nc
+      <td><span class="badge ${isLow ? 'badge-danger' : 'badge-success'}">${isLow ? '⚠ Low' : '✓ OK'}</span></nc
+      <td>$${(ing.costPerUnit).toFixed(4)}/${ing.unit}</nc
       <td>
         <div style="display:flex;gap:.4rem">
           <button class="btn btn-outline btn-xs" onclick="openEditIngredient('${ing.id}')">✏ Edit</button>
           <button class="btn btn-danger btn-xs" onclick="deleteIngredient('${ing.id}')">🗑</button>
         </div>
-      </td>
-    </tr>`;
+       </nc
+    表`;
   }).join('');
   el('ing-count').textContent = `${state.ingredients.length} items`;
 }
@@ -231,7 +254,7 @@ function renderProducts() {
   );
   const tbody = el('prod-tbody');
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">☕</div><p>${state.prodFilter ? 'No results found' : 'No products yet. Add one!'}</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">☕</div><p>${state.prodFilter ? 'No results found' : 'No products yet. Add one!'}</p></div></nc表`;
     return;
   }
   tbody.innerHTML = filtered.map(prod => {
@@ -244,7 +267,7 @@ function renderProducts() {
     }).join('');
     return `
     <tr id="prod-row-${prod.id}">
-      <td><span style="font-weight:600">${prod.name}</span></td>
+      <td><span style="font-weight:600">${prod.name}</span></nc
       <td style="font-weight:700;color:var(--brown-700)">${fmt(prod.price)}</td>
       <td style="color:var(--red-600)">${fmt(cost)}</td>
       <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
@@ -253,15 +276,15 @@ function renderProducts() {
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
           <span class="margin-text">${margin}%</span>
         </div>
-      </td>
-      <td><div style="max-width:260px;flex-wrap:wrap;display:flex">${recipe}</div></td>
+       </nc
+      <td><div style="max-width:260px;flex-wrap:wrap;display:flex">${recipe}</div></nc
       <td>
         <div style="display:flex;gap:.4rem">
           <button class="btn btn-outline btn-xs" onclick="openEditProduct('${prod.id}')">✏ Edit</button>
           <button class="btn btn-danger btn-xs" onclick="deleteProduct('${prod.id}')">🗑</button>
         </div>
-      </td>
-    </tr>`;
+       </nc
+    表`;
   }).join('');
   el('prod-count').textContent = `${state.products.length} items`;
 }
@@ -421,7 +444,7 @@ async function sellProduct(productId) {
 function renderProfitTable() {
   const tbody = el('profit-tbody');
   if (state.products.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📊</div><p>No products to analyze.</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📊</div><p>No products to analyze.</p></div></nc表`;
     return;
   }
   const sorted = [...state.products].sort((a, b) => {
@@ -436,7 +459,7 @@ function renderProfitTable() {
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
     return `
     <tr>
-      <td><span style="font-weight:600">${medal} ${prod.name}</span></td>
+      <td><span style="font-weight:600">${medal} ${prod.name}</span></nc
       <td style="font-weight:700">${fmt(prod.price)}</td>
       <td style="color:var(--red-600)">${fmt(cost)}</td>
       <td style="color:var(--green-600);font-weight:700">${fmt(profit)}</td>
@@ -445,8 +468,8 @@ function renderProfitTable() {
           <div class="profit-bar"><div class="profit-bar-fill" style="width:${margin}%"></div></div>
           <span class="margin-text">${margin}%</span>
         </div>
-      </td>
-    </tr>`;
+       </nc
+    表`;
   }).join('');
 }
 
