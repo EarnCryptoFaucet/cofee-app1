@@ -1089,19 +1089,34 @@ tr:hover td { background: var(--brown-50); }
         flex-wrap: wrap;
     }
     
+    /* اجازه اسکرroll افقی به جدول */
+    #dash-panel-sell .panel:last-child .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
     #dash-panel-sell table {
-        min-width: 380px;
+        min-width: 450px;
+        font-size: 0.7rem;
     }
     
     #dash-panel-sell th,
     #dash-panel-sell td {
         padding: 0.4rem 0.5rem;
+    }
+    
+    /* حذف نکن! فقط فونت رو کوچیکتر کن */
+    #dash-panel-sell td:nth-child(5) {
         font-size: 0.7rem;
     }
     
-    /* Hide one column on very small screens if needed */
-    #dash-panel-sell th:nth-child(3),
-    #dash-panel-sell td:nth-child(3) {
-        display: none;
+    /* Profit bar در موبایل */
+    #dash-panel-sell .profit-bar-wrap {
+        min-width: 70px;
+        gap: 0.3rem;
+    }
+    
+    #dash-panel-sell .profit-bar {
+        height: 4px;
     }
 }
