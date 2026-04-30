@@ -580,17 +580,18 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setDashTab('sell');
 });
-// ─── MAKE FUNCTIONS GLOBALLY ACCESSIBLE ───
 window.showSection = showSection;
+window.loadAll = loadAll;
 window.setDashTab = setDashTab;
-window.openModal = openModal;
-window.closeModal = closeModal;
 window.openAddIngredient = openAddIngredient;
-window.openAddProduct = openAddProduct;
-window.sellProduct = sellProduct;
 window.saveIngredient = saveIngredient;
+window.openAddProduct = openAddProduct;
 window.saveProduct = saveProduct;
+window.sellProduct = sellProduct;
+window.submitFeedback = submitFeedback;
+window.setRating = setRating;
+window.closeModal = closeModal;
+window.openModal = openModal;
 window.deleteIngredient = deleteIngredient;
 window.deleteProduct = deleteProduct;
-window.setRating = setRating;
-window.submitFeedback = submitFeedback;
+window.refreshStats = refreshStats;
